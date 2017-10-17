@@ -56,11 +56,13 @@ ant clean
 ant wiki
 # Check changed files
 if [ ! -z "$TRAVIS_COMMIT_RANGE" ]; then
+	echo $TRAVIS_COMMIT_RANGE
 	CHANGED_FILES=($(git diff --name-only $TRAVIS_COMMIT_RANGE))
 	# Changes in wiki/docs. Execute wiki task.
 	num_changed = CHANGED_FILES | wc -l;
 	num_in_wiki = CHANGED_FILES | grep -io "./wiki"|wc -l;
-
+	echo "$num_changed out of $num_in_wiki"
+	echo "BTW, $TRAVIS_PULL_REQUEST"
 	# If there are any changes in wiki, and this is not a PR, commit it to gh-pages
 	if [ $num_in_wiki -gt 0 ] && [ "$TRAVIS_PULL_REQUEST" = "false" ]; then
 		git clone -b gh-pages --single-branch https://github.com/akarthik10/GNS GNS_wiki
