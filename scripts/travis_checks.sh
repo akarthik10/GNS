@@ -57,10 +57,10 @@ ant wiki
 # Check changed files
 if [ ! -z "$TRAVIS_COMMIT_RANGE" ]; then
 	echo $TRAVIS_COMMIT_RANGE
-	CHANGED_FILES=($(git diff --name-only $TRAVIS_COMMIT_RANGE))
+	CHANGED_FILES=$(git diff --name-only $TRAVIS_COMMIT_RANGE)
 	# Changes in wiki/docs. Execute wiki task.
-	num_changed = `cat CHANGED_FILES | wc -l`;
-	num_in_wiki = `cat CHANGED_FILES | grep -io "./wiki"|wc -l`;
+	num_changed = `echo $CHANGED_FILES | wc -l`;
+	num_in_wiki = `echo $CHANGED_FILES | grep -io "./wiki"|wc -l`;
 	echo "$num_changed out of $num_in_wiki"
 	echo "BTW, $TRAVIS_PULL_REQUEST"
 	# If there are any changes in wiki, and this is not a PR, commit it to gh-pages
