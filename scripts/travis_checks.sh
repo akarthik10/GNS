@@ -55,7 +55,7 @@ ant clean
 
 ant wiki
 # Check changed files
-if [ -z "$TRAVIS_COMMIT_RANGE" ]; then
+if [ ! -z "$TRAVIS_COMMIT_RANGE" ]; then
 	CHANGED_FILES=($(git diff --name-only $TRAVIS_COMMIT_RANGE))
 	# Changes in wiki/docs. Execute wiki task.
 	num_changed = CHANGED_FILES | wc -l;
@@ -63,13 +63,13 @@ if [ -z "$TRAVIS_COMMIT_RANGE" ]; then
 
 	# If there are any changes in wiki, and this is not a PR, commit it to gh-pages
 	if [ $num_in_wiki -gt 0 ] && [ "$TRAVIS_PULL_REQUEST" = "false" ]; then
-		git clone -b gh-pages --single-branch https://github.com/MobilityFirst/GNS GNS_wiki
+		git clone -b gh-pages --single-branch https://github.com/akarthik10/GNS GNS_wiki
 		rsync -av wiki/generated/_data/ GNS_wiki/_data/
 		rsync -av wiki/generated_docs/ GNS_wiki/docs/
 		rsync -av wiki/generated/_includes/ GNS_wiki/_includes
 		cd GNS_wiki
 		git add -A; git commit -m "Wiki update from Travis CI";
-		git remote add wiki-remote https://${GIT_API_KEY}@github.com/MobilityFirst/GNS.git
+		git remote add wiki-remote https://${GIT_API_KEY}@github.com/akarthik10/GNS.git
 		git push wiki-remote gh-pages
 	fi
 
